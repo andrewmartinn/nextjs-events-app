@@ -248,9 +248,9 @@
   font-size: 16px;
 }
 
-.cl-userButtonPopoverCard {
+/* .cl-userButtonPopoverCard {
   right: 4px !important;
-}
+} */
 
 .cl-formButtonPrimary:hover,
 .cl-formButtonPrimary:focus,
@@ -278,4 +278,10 @@
 
 .react-datepicker__time-list-item--selected {
   background-color: #624cf5 !important;
+}
+
+@media (max-width: 500px) {
+  .cl-userButtonPopoverCard.cl-popoverBox {
+    left: 20px !important;
+  }
 }

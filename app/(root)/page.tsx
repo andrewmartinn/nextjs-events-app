@@ -7,7 +7,6 @@ export default function Home() {
     <>
       <section className="bg-primary-50 bg-dotted-pattern bg-contain py-5 md:py-10">
         <div className="wrapper grid grid-cols-1 gap-5 md:grid-cols-2 2xl:gap-0">
-          {/* hero content */}
           <div className="flex flex-col justify-center gap-8">
             <h1 className="h1-bold">
               Discover, Connect, Experience: Your Events, Our Platform
@@ -21,7 +20,6 @@ export default function Home() {
               <Link href="#events">Discover Now</Link>
             </Button>
           </div>
-          {/* hero image */}
           <Image
             src="/assets/images/hero.png"
             alt="hero image"

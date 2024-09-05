@@ -9,7 +9,6 @@ export default function Navbar() {
   return (
     <header className="w-full shadow-md">
       <div className="nav-wrapper flex items-center justify-between">
-        {/* logo */}
         <Link href="/">
           <Image
             priority
@@ -20,13 +19,11 @@ export default function Navbar() {
             className="mt-1 h-[38px] w-[128px] object-contain md:mt-0"
           />
         </Link>
-        {/* nav items */}
         <SignedIn>
           <nav className="md:flex-between hidden w-full max-w-xs">
             <NavItems />
           </nav>
         </SignedIn>
-        {/* login button */}
         <div className="flex justify-end gap-5">
           <SignedIn>
             <UserButton />
