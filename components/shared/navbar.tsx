@@ -2,6 +2,8 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import NavItems from "./nav-items";
+import MobileNav from "./mobile-nav";
 
 export default function Navbar() {
   return (
@@ -19,10 +21,16 @@ export default function Navbar() {
           />
         </Link>
         {/* nav items */}
+        <SignedIn>
+          <nav className="md:flex-between hidden w-full max-w-xs">
+            <NavItems />
+          </nav>
+        </SignedIn>
         {/* login button */}
         <div className="flex justify-end gap-5">
           <SignedIn>
             <UserButton />
+            <MobileNav />
           </SignedIn>
           <SignedOut>
             <SignInButton>

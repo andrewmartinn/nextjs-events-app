@@ -5,7 +5,7 @@ import {
 } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
-const isProtectedRoute = createRouteMatcher(["/profile(.*)"]);
+const isProtectedRoute = createRouteMatcher(["/profile(.*)", "/events/create"]);
 const isIgnoredRoute = createRouteMatcher([
   "/api/webhook/clerk",
   "/api/webhook/stripe",
