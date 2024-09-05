@@ -14,7 +14,7 @@ export default function NavItems() {
         return (
           <li
             key={item.id}
-            className={`${isActiveLink && "text-primary-500"} p-medium-16 whitespace-nowrap`}
+            className={`${isActiveLink && "text-primary-500"} p-medium-15 whitespace-nowrap`}
           >
             <Link href={item.url}>{item.name}</Link>
           </li>
