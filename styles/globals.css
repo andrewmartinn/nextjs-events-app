@@ -81,7 +81,11 @@
 /* TAILWIND UTILITIES */
 @layer utilities {
   .wrapper {
-    @apply w-full max-w-7xl p-5 md:px-10 lg:mx-auto xl:px-0;
+    @apply w-full max-w-7xl p-4 md:px-10 lg:mx-auto xl:px-0;
+  }
+
+  .nav-wrapper {
+    @apply w-full max-w-7xl px-4 py-3 md:px-10 lg:mx-auto xl:px-0;
   }
 
   .flex-center {
