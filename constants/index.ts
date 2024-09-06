@@ -15,3 +15,16 @@ export const navLinks = [
     url: "/profile",
   },
 ] as const;
+
+export const eventFormDefaultValues = {
+  title: "",
+  description: "",
+  location: "",
+  imageUrl: "",
+  startDateTime: new Date(),
+  endDateTime: new Date(),
+  categoryId: "",
+  price: "",
+  isFree: false,
+  url: "",
+};

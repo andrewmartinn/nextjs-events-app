@@ -1,0 +1,25 @@
+import EventForm from "@/components/shared/event-form";
+import { auth } from "@clerk/nextjs/server";
+
+export default function UpdateEvent() {
+  const { sessionClaims } = auth();
+
+  const userId = sessionClaims?.userId as string;
+
+  console.log(
+    "[update_event] session claims: ",
+    sessionClaims,
+    "[update_event] userId: ",
+    userId,
+  );
+  return (
+    <>
+      <section className="wrapper bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10">
+        <h3 className="h3-bold text-center sm:text-left">Update Event</h3>
+      </section>
+      <div className="wrapper my-8">
+        <EventForm userId={userId} type="Update" />
+      </div>
+    </>
+  );
+}
