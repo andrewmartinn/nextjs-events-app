@@ -32,5 +32,4 @@ export type CreateEventParams = {
     url: string;
   };
   userId: string;
-  path: string;
 };

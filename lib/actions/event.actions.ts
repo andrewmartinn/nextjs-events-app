@@ -7,11 +7,7 @@ import { CreateEventParams } from "../definitions";
 import { handleError } from "../utils";
 
 // CREATE EVENT
-export const createEvent = async ({
-  event,
-  userId,
-  path,
-}: CreateEventParams) => {
+export const createEvent = async ({ event, userId }: CreateEventParams) => {
   try {
     await connectToDb();
     // find event organizer for the event
