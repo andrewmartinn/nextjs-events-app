@@ -13,3 +13,24 @@ export type UpdateUserParams = {
   username: string;
   photo: string;
 };
+
+export type CreateCategoryParams = {
+  name: string;
+};
+
+export type CreateEventParams = {
+  event: {
+    title: string;
+    description: string;
+    location: string;
+    imageUrl: string;
+    startDateTime: Date;
+    endDateTime: Date;
+    categoryId: string;
+    price: string;
+    isFree: boolean;
+    url: string;
+  };
+  userId: string;
+  path: string;
+};

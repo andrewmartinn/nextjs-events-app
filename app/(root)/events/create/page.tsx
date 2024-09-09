@@ -3,15 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 
 export default function CreateEvent() {
   const { sessionClaims } = auth();
-
   const userId = sessionClaims?.userId as string;
-
-  console.log(
-    "[create_event_page] session claims: ",
-    sessionClaims,
-    "[create_event_page] userId: ",
-    userId,
-  );
 
   return (
     <>

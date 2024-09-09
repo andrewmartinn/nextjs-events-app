@@ -23,7 +23,6 @@ export default function FileUploader({
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setImageFiles(acceptedFiles);
     onFieldChange(convertFileToUrl(acceptedFiles[0]));
-    console.log(convertFileToUrl(acceptedFiles[0]));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

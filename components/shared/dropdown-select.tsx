@@ -1,6 +1,6 @@
 "use client";
 
-import { startTransition, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 
 import {
   Select,
@@ -21,6 +21,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Input } from "../ui/input";
+import {
+  createCategory,
+  getAllCategories,
+} from "@/lib/actions/category.actions";
+import { ICategory } from "@/lib/database/models/category.model";
 
 type DropdownSelectProps = {
   value?: string;
@@ -32,24 +37,32 @@ export default function DropdownSelect({
   onChangeHandler,
 }: DropdownSelectProps) {
   const [newCategory, setNewCategory] = useState("");
-  const [categories, setCategories] = useState([
-    { _id: "1", name: "Nextjs" },
-    { _id: "2", name: "React" },
-    { _id: "3", name: "Tech Conference" },
-    { _id: "4", name: "Product Showcase" },
-  ]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
 
-  // @TODO: Add category to DB
+  // adds new categories to DB
   const handleAddCategory = () => {
     if (newCategory.trim() !== "") {
       const newCategoryItem = {
-        _id: (Math.ceil(Math.random() * 1000) + 1).toString(),
-        name: newCategory,
+        name: newCategory.trim(),
       };
 
-      setCategories((prevCategories) => [...prevCategories, newCategoryItem]);
+      createCategory(newCategoryItem)
+        .then((category) => {
+          setCategories((prevCategories) => [...prevCategories, category]);
+        })
+        .catch((error) => console.log(error));
     }
   };
+
+  // fetch all categories on component mount
+  useEffect(() => {
+    const fetchAllCategories = async () => {
+      const categoryList: ICategory[] = await getAllCategories();
+      categoryList && setCategories(categoryList);
+    };
+
+    fetchAllCategories();
+  }, []);
 
   return (
     <Select onValueChange={onChangeHandler} defaultValue={value}>
