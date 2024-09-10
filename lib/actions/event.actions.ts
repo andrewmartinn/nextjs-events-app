@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use server";
 
 import { connectToDb } from "../database";
@@ -7,7 +8,12 @@ import Event from "../database/models/event.model";
 import Category from "../database/models/category.model";
 
 import { handleError } from "../utils";
-import { CreateEventParams } from "../definitions";
+import {
+  CreateEventParams,
+  DeleteEventParams,
+  GetAllEventsParams,
+} from "../definitions";
+import { revalidatePath } from "next/cache";
 
 // POPULATE EVENT INFO (USER, CATEGORY)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -66,6 +72,57 @@ export const getEventById = async (eventId: string) => {
     }
 
     return JSON.parse(JSON.stringify(event));
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+// GET ALL EVENTS
+export const getAllEvents = async ({
+  query,
+  limit = 6,
+  page,
+  category,
+}: GetAllEventsParams) => {
+  try {
+    await connectToDb();
+
+    // sort and filter conditions (title, category, etc)
+    const queryConditions = {};
+
+    const eventsQuery = Event.find(queryConditions)
+      .sort({ createdAt: "desc" })
+      .skip(0)
+      .limit(limit);
+
+    const events = await populateEventDetails(eventsQuery);
+    const totalResultsCount = await Event.countDocuments(queryConditions);
+
+    if (!events) {
+      throw new Error("SERVER ERROR: Failed to fetch events data");
+    }
+
+    return {
+      data: JSON.parse(JSON.stringify(events)),
+      totalResults: Math.ceil(totalResultsCount / limit),
+    };
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+// DELETE EVENT
+export const deleteEvent = async ({ eventId, path }: DeleteEventParams) => {
+  try {
+    await connectToDb();
+
+    const deletedEvent = await Event.findByIdAndDelete(eventId);
+
+    if (!deletedEvent) {
+      throw new Error("SERVER ERROR: Failed to delete event");
+    }
+
+    revalidatePath(path);
   } catch (error) {
     handleError(error);
   }

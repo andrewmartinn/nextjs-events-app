@@ -33,3 +33,15 @@ export type CreateEventParams = {
   };
   userId: string;
 };
+
+export type GetAllEventsParams = {
+  query: string;
+  category: string;
+  limit: number;
+  page: number;
+};
+
+export type DeleteEventParams = {
+  eventId: string;
+  path: string;
+};
