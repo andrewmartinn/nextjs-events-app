@@ -1,9 +1,11 @@
 "use server";
 
 import { connectToDb } from "../database";
+
 import Category from "../database/models/category.model";
-import { CreateCategoryParams } from "../definitions";
+
 import { handleError } from "../utils";
+import { CreateCategoryParams } from "../definitions";
 
 // CREATE CATEGORY
 export const createCategory = async (category: CreateCategoryParams) => {

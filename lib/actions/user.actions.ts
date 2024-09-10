@@ -3,12 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { connectToDb } from "../database";
 
-import { CreateUserParams, UpdateUserParams } from "../definitions";
-import { handleError } from "../utils";
-
 import Event from "../database/models/event.model";
 import User from "../database/models/user.model";
 import Order from "../database/models/order.model";
+
+import { handleError } from "../utils";
+import { CreateUserParams, UpdateUserParams } from "../definitions";
 
 // CREATE USER
 export const createUser = async (user: CreateUserParams) => {
