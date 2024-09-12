@@ -12,6 +12,7 @@ import {
   CreateEventParams,
   DeleteEventParams,
   GetAllEventsParams,
+  UpdateEventParams,
 } from "../definitions";
 import { revalidatePath } from "next/cache";
 
@@ -106,6 +107,36 @@ export const getAllEvents = async ({
       data: JSON.parse(JSON.stringify(events)),
       totalResults: Math.ceil(totalResultsCount / limit),
     };
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+// UPDATE EVENT
+export const updateEvent = async ({
+  userId,
+  event,
+  path,
+}: UpdateEventParams) => {
+  try {
+    await connectToDb();
+
+    const eventToUpdate = await Event.findById(event._id);
+    if (
+      !eventToUpdate ||
+      eventToUpdate.eventOrganizer.toHexString() !== userId
+    ) {
+      throw new Error("SERVER ERROR: Unauthorized or event not found");
+    }
+
+    const updatedEvent = await Event.findByIdAndUpdate(
+      event._id,
+      { ...event, category: event.categoryId },
+      { new: true },
+    );
+    // invalidate cache and refresh app data
+    revalidatePath(path);
+    return JSON.parse(JSON.stringify(updatedEvent));
   } catch (error) {
     handleError(error);
   }

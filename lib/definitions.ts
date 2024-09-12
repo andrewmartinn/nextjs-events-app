@@ -34,6 +34,24 @@ export type CreateEventParams = {
   userId: string;
 };
 
+export type UpdateEventParams = {
+  event: {
+    _id: string;
+    title: string;
+    description: string;
+    location: string;
+    imageUrl: string;
+    startDateTime: Date;
+    endDateTime: Date;
+    categoryId: string;
+    price: string;
+    isFree: boolean;
+    url: string;
+  };
+  userId: string;
+  path: string;
+};
+
 export type GetAllEventsParams = {
   query: string;
   category: string;
