@@ -12,6 +12,7 @@ import {
   CreateEventParams,
   DeleteEventParams,
   GetAllEventsParams,
+  GetRelatedEventsByCategoryParams,
   UpdateEventParams,
 } from "../definitions";
 import { revalidatePath } from "next/cache";
@@ -33,7 +34,11 @@ const populateEventDetails = async (query: any) => {
 };
 
 // CREATE EVENT
-export const createEvent = async ({ event, userId }: CreateEventParams) => {
+export const createEvent = async ({
+  event,
+  userId,
+  path,
+}: CreateEventParams) => {
   try {
     await connectToDb();
     // find event organizer for the event
@@ -54,6 +59,7 @@ export const createEvent = async ({ event, userId }: CreateEventParams) => {
       throw new Error("SERVER ERROR: Failed to create event");
     }
 
+    revalidatePath(path);
     return JSON.parse(JSON.stringify(createdEvent));
   } catch (error) {
     handleError(error);
@@ -154,6 +160,46 @@ export const deleteEvent = async ({ eventId, path }: DeleteEventParams) => {
     }
 
     revalidatePath(path);
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+// GET RELATED EVENTS: EVENTS MATCHING SAME CATEGORY
+export const getRelatedEventsByCategory = async ({
+  categoryId,
+  eventId,
+  page = 1,
+  limit = 3,
+}: GetRelatedEventsByCategoryParams) => {
+  try {
+    await connectToDb();
+
+    // pagination calculation
+    const skipAmount = (Number(page) - 1) * limit;
+    // fetch all events matching the same category id excludes current event
+    const queryConditions = {
+      $and: [{ category: categoryId }, { _id: { $ne: eventId } }],
+    };
+
+    const eventsQuery = Event.find(queryConditions)
+      .sort({ createdAt: "desc" })
+      .skip(skipAmount)
+      .limit(limit);
+
+    const events = await populateEventDetails(eventsQuery);
+    const totalResultsCount = await Event.countDocuments(eventsQuery);
+
+    if (!events) {
+      throw new Error(
+        "SERVER ERROR: Unable to find related events matching the query",
+      );
+    }
+
+    return {
+      data: JSON.parse(JSON.stringify(events)),
+      totalResults: Math.ceil(totalResultsCount / limit),
+    };
   } catch (error) {
     handleError(error);
   }

@@ -86,6 +86,7 @@ export default function EventForm({
         const newEventData = {
           event: { ...values, imageUrl: uploadedImageUrl },
           userId,
+          path: "/profile",
         };
 
         // create event on DB

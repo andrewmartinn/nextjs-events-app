@@ -32,6 +32,7 @@ export type CreateEventParams = {
     url: string;
   };
   userId: string;
+  path: string;
 };
 
 export type UpdateEventParams = {
@@ -62,4 +63,11 @@ export type GetAllEventsParams = {
 export type DeleteEventParams = {
   eventId: string;
   path: string;
+};
+
+export type GetRelatedEventsByCategoryParams = {
+  eventId: string;
+  categoryId: string;
+  limit?: number;
+  page: number | string;
 };
