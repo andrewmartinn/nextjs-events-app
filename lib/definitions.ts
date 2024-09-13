@@ -71,3 +71,9 @@ export type GetRelatedEventsByCategoryParams = {
   limit?: number;
   page: number | string;
 };
+
+export type GetEventsByUserParams = {
+  userId: string;
+  page: number | string;
+  limit?: number;
+};

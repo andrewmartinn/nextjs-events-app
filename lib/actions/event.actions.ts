@@ -12,6 +12,7 @@ import {
   CreateEventParams,
   DeleteEventParams,
   GetAllEventsParams,
+  GetEventsByUserParams,
   GetRelatedEventsByCategoryParams,
   UpdateEventParams,
 } from "../definitions";
@@ -194,6 +195,39 @@ export const getRelatedEventsByCategory = async ({
       throw new Error(
         "SERVER ERROR: Unable to find related events matching the query",
       );
+    }
+
+    return {
+      data: JSON.parse(JSON.stringify(events)),
+      totalResults: Math.ceil(totalResultsCount / limit),
+    };
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+// GET EVENTS CREATED BY USER
+export const getEventsByUser = async ({
+  userId,
+  page,
+  limit = 6,
+}: GetEventsByUserParams) => {
+  try {
+    await connectToDb();
+
+    const skipAmount = (Number(page) - 1) * limit;
+    const queryConditions = { eventOrganizer: userId };
+
+    const eventsQuery = Event.find(queryConditions)
+      .sort({ createdAt: "desc" })
+      .skip(skipAmount)
+      .limit(limit);
+
+    const events = await populateEventDetails(eventsQuery);
+    const totalResultsCount = await Event.countDocuments(eventsQuery);
+
+    if (!events) {
+      throw new Error("SERVER ERROR: Failed to fetch events organized");
     }
 
     return {
