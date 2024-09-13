@@ -23,7 +23,7 @@ export default async function ProfilePage() {
         </div>
       </section>
       <section className="wrapper my-8">
-        <Collection
+        {/* <Collection
           data={[]}
           emptyTitle="No Tickets Purchased"
           emptyMessage="Place an order to see your tickets."
@@ -32,7 +32,7 @@ export default async function ProfilePage() {
           page={1}
           urlParamName="ordersPage"
           totalPages={2}
-        />
+        /> */}
       </section>
 
       {/* events organized section */}
