@@ -8,6 +8,7 @@ import {
 } from "@/lib/actions/event.actions";
 import { IEvent } from "@/lib/database/models/event.model";
 import { formatDateTime } from "@/lib/utils";
+import CheckoutButton from "@/components/shared/checkout-button";
 
 type EventDetailsProps = {
   params: {
@@ -61,6 +62,7 @@ export default async function EventDetails({
               </div>
             </div>
             {/* @TODO: ADD ORDER BUTTON */}
+            <CheckoutButton event={event} />
             <div className="flex flex-col gap-5">
               <div className="flex gap-2 md:gap-3">
                 <Image

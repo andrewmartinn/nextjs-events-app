@@ -5,7 +5,7 @@ import { createUser, deleteUser, updateUser } from "@/lib/actions/user.actions";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+  const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
 
   if (!WEBHOOK_SECRET) {
     throw new Error(
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
       clerkId: id,
       email: email_addresses[0].email_address,
       username: username!,
-      firstName: first_name!,
+      firstName: first_name! || username!,
       lastName: last_name || "",
       photo: image_url,
     };
@@ -88,7 +88,7 @@ export async function POST(req: Request) {
     // Create user object according to user model
     const clerkUser = {
       username: username!,
-      firstName: first_name!,
+      firstName: first_name! || username!,
       lastName: last_name || "",
       photo: image_url,
     };
