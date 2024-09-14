@@ -1,15 +1,30 @@
 import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
+
 import { Button } from "@/components/ui/button";
 import Collection from "@/components/shared/events-collection";
-import { getEventsByUser } from "@/lib/actions/event.actions";
 
-export default async function ProfilePage() {
+import { SearchParamProps } from "@/lib/definitions";
+import { IOrder } from "@/lib/database/models/order.model";
+import { getEventsByUser } from "@/lib/actions/event.actions";
+import { getOrdersByUser } from "@/lib/actions/order.actions";
+
+export default async function ProfilePage({ searchParams }: SearchParamProps) {
   const { sessionClaims } = auth();
   const userId = sessionClaims?.userId as string;
 
+  // retrieve pagination count from URL
+  const ordersPage = Number(searchParams?.ordersPage) || 1;
+  const eventsPage = Number(searchParams?.eventsPage) || 1;
+
+  // get all orders made by user
+  const userOrders = await getOrdersByUser({ userId, page: ordersPage });
+  // get event details from user orders
+  const orderedEvents = userOrders?.data.map(
+    (order: IOrder) => order.event || [],
+  );
   // get events organized by user
-  const organizedEvents = await getEventsByUser({ userId, page: 1 });
+  const organizedEvents = await getEventsByUser({ userId, page: eventsPage });
 
   return (
     <>
@@ -23,16 +38,16 @@ export default async function ProfilePage() {
         </div>
       </section>
       <section className="wrapper my-8">
-        {/* <Collection
-          data={[]}
+        <Collection
+          data={orderedEvents}
           emptyTitle="No Tickets Purchased"
           emptyMessage="Place an order to see your tickets."
           collectionType="My_Tickets"
           limit={3}
-          page={1}
+          page={ordersPage}
           urlParamName="ordersPage"
-          totalPages={2}
-        /> */}
+          totalPages={userOrders?.totalResults}
+        />
       </section>
 
       {/* events organized section */}
@@ -51,9 +66,9 @@ export default async function ProfilePage() {
           emptyMessage="Organize some events and check back later."
           collectionType="Events_Organized"
           limit={6}
-          page={1}
+          page={eventsPage}
           urlParamName="eventsPage"
-          totalPages={2}
+          totalPages={organizedEvents?.totalResults}
         />
       </section>
     </>

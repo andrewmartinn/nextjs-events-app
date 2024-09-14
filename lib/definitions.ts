@@ -93,3 +93,14 @@ export type CreateOrderParams = {
   totalAmount: string;
   createdAt: Date;
 };
+
+export type GetOrdersByUserParams = {
+  userId: string | null;
+  limit?: number;
+  page: number | string | null;
+};
+
+export type SearchParamProps = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};

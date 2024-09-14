@@ -2,12 +2,12 @@
 "use server";
 
 import { connectToDb } from "../database";
+import { revalidatePath } from "next/cache";
 
 import User from "../database/models/user.model";
 import Event from "../database/models/event.model";
 import Category from "../database/models/category.model";
 
-import { handleError } from "../utils";
 import {
   CreateEventParams,
   DeleteEventParams,
@@ -16,7 +16,7 @@ import {
   GetRelatedEventsByCategoryParams,
   UpdateEventParams,
 } from "../definitions";
-import { revalidatePath } from "next/cache";
+import { handleError } from "../utils";
 
 // POPULATE EVENT INFO (USER, CATEGORY)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
