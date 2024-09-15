@@ -3,12 +3,18 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Collection from "@/components/shared/events-collection";
 import { getAllEvents } from "@/lib/actions/event.actions";
+import Search from "@/components/shared/search";
+import { SearchParamProps } from "@/lib/definitions";
 
-export default async function Home() {
+export default async function Home({ searchParams }: SearchParamProps) {
+  const page = Number(searchParams?.page) || 1;
+  const searchText = (searchParams?.query as string) || "";
+  const category = (searchParams?.category as string) || "";
+
   const events = await getAllEvents({
-    query: "",
-    category: "",
-    page: 1,
+    query: searchText,
+    category: category,
+    page: page,
     limit: 6,
   });
 
@@ -49,6 +55,7 @@ export default async function Home() {
         </h2>
         <div className="flex w-full flex-col gap-5 md:flex-row">
           {/* search bar */}
+          <Search />
           {/* category filter */}
         </div>
         {/* event grid */}

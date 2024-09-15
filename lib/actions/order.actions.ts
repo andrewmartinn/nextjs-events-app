@@ -3,6 +3,7 @@
 import Stripe from "stripe";
 import { connectToDb } from "../database";
 import { redirect } from "next/navigation";
+import { ObjectId } from "mongodb";
 
 import Order from "../database/models/order.model";
 import Event from "../database/models/event.model";
@@ -11,6 +12,7 @@ import User from "../database/models/user.model";
 import {
   CheckoutOrderParams,
   CreateOrderParams,
+  GetOrdersByEventParams,
   GetOrdersByUserParams,
 } from "../definitions";
 import { handleError } from "../utils";
@@ -109,6 +111,71 @@ export const getOrdersByUser = async ({
       data: JSON.parse(JSON.stringify(orders)),
       totalResults: Math.ceil(totalResultsCount / limit),
     };
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+// GET ALL ORDERS FOR A SPECIFIC EVENT
+export const getOrdersByEvent = async ({
+  eventId,
+  searchString,
+}: GetOrdersByEventParams) => {
+  try {
+    await connectToDb();
+
+    if (!eventId) {
+      throw new Error("SERVER ERROR: Event ID not provided");
+    }
+
+    const eventObjectId = new ObjectId(eventId);
+
+    const orders = await Order.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "buyer",
+          foreignField: "_id",
+          as: "buyer",
+        },
+      },
+      {
+        $unwind: "$buyer",
+      },
+      {
+        $lookup: {
+          from: "events",
+          localField: "event",
+          foreignField: "_id",
+          as: "event",
+        },
+      },
+      {
+        $unwind: "$event",
+      },
+      {
+        $project: {
+          _id: 1,
+          totalAmount: 1,
+          createdAt: 1,
+          eventTitle: "$event.title",
+          eventId: "$event._id",
+          buyer: {
+            $concat: ["$buyer.firstName", " ", "$buyer.lastName"],
+          },
+        },
+      },
+      {
+        $match: {
+          $and: [
+            { eventId: eventObjectId },
+            { buyer: { $regex: RegExp(searchString, "i") } },
+          ],
+        },
+      },
+    ]);
+
+    return JSON.parse(JSON.stringify(orders));
   } catch (error) {
     handleError(error);
   }

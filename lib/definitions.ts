@@ -100,7 +100,23 @@ export type GetOrdersByUserParams = {
   page: number | string | null;
 };
 
+export type GetOrdersByEventParams = {
+  searchString: string;
+  eventId: string;
+};
+
 export type SearchParamProps = {
   params: { id: string };
   searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export type FormUrlQueryParams = {
+  params: string;
+  key: string;
+  value: string | null;
+};
+
+export type RemoveUrlQueryParams = {
+  params: string;
+  keysToRemove: string[];
 };

@@ -1,5 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { FormUrlQueryParams, RemoveUrlQueryParams } from "./definitions";
+import qs from "query-string";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -48,6 +50,56 @@ export const formatDateTime = (dateString: Date) => {
     dateOnly: formattedDate,
     timeOnly: formattedTime,
   };
+};
+
+export const formatPrice = (price: string): string => {
+  const amount = parseFloat(price);
+
+  const priceOptions: Intl.NumberFormatOptions = {
+    style: "currency",
+    currency: "USD",
+  };
+
+  const formattedPrice = new Intl.NumberFormat("en-US", priceOptions).format(
+    amount,
+  );
+
+  return formattedPrice;
+};
+
+export const formUrlQuery = ({ params, key, value }: FormUrlQueryParams) => {
+  const currentUrl = qs.parse(params);
+
+  // adds key and value to url
+  currentUrl[key] = value;
+
+  // returns url string with the updated query keys
+  return qs.stringifyUrl(
+    {
+      url: window.location.pathname,
+      query: currentUrl,
+    },
+    { skipNull: true },
+  );
+};
+
+export const removeKeysFromQuery = ({
+  params,
+  keysToRemove,
+}: RemoveUrlQueryParams) => {
+  const currentUrl = qs.parse(params);
+
+  keysToRemove.forEach((key) => {
+    delete currentUrl[key];
+  });
+
+  return qs.stringifyUrl(
+    {
+      url: window.location.pathname,
+      query: currentUrl,
+    },
+    { skipNull: true },
+  );
 };
 
 export const convertFileToUrl = (file: File) => URL.createObjectURL(file);

@@ -34,6 +34,10 @@ const populateEventDetails = async (query: any) => {
     });
 };
 
+const getCategoryByName = async (name: string) => {
+  return Category.findOne({ name: { $regex: name, $options: "i" } });
+};
+
 // CREATE EVENT
 export const createEvent = async ({
   event,
@@ -95,8 +99,21 @@ export const getAllEvents = async ({
   try {
     await connectToDb();
 
+    const titleCondition = query
+      ? { title: { $regex: query, $options: "i" } }
+      : {};
+
+    const categoryCondition = category
+      ? await getCategoryByName(category)
+      : null;
+
     // sort and filter conditions (title, category, etc)
-    const queryConditions = {};
+    const queryConditions = {
+      $and: [
+        titleCondition,
+        categoryCondition ? { category: categoryCondition._id } : {},
+      ],
+    };
 
     const eventsQuery = Event.find(queryConditions)
       .sort({ createdAt: "desc" })
