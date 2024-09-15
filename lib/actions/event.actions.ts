@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use server";
 
 import { connectToDb } from "../database";
@@ -115,9 +114,10 @@ export const getAllEvents = async ({
       ],
     };
 
+    const skipAmount = (Number(page) - 1) * limit;
     const eventsQuery = Event.find(queryConditions)
       .sort({ createdAt: "desc" })
-      .skip(0)
+      .skip(skipAmount)
       .limit(limit);
 
     const events = await populateEventDetails(eventsQuery);

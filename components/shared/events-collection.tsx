@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { IEvent } from "@/lib/database/models/event.model";
 import Image from "next/image";
 import Card from "./card";
+import Pagination from "./pagination";
 
 type CollectionProps = {
   data: IEvent[];
@@ -42,6 +42,13 @@ export default function Collection({
               );
             })}
           </ul>
+          {totalPages > 1 && (
+            <Pagination
+              urlParamName={urlParamName}
+              page={page}
+              totalPages={totalPages}
+            />
+          )}
         </div>
       ) : (
         <div className="flex-center wrapper min-h-[200px] w-full flex-col gap-3 rounded-[14px] bg-gray-50 py-28 text-center">

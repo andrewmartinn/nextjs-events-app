@@ -19,7 +19,6 @@ export default async function Home({ searchParams }: SearchParamProps) {
     limit: 6,
   });
 
-  console.log(events);
   return (
     <>
       <section className="bg-primary-50 bg-dotted-pattern bg-contain py-5 md:py-10">
@@ -55,22 +54,18 @@ export default async function Home({ searchParams }: SearchParamProps) {
           Thousands of Events
         </h2>
         <div className="flex w-full flex-col gap-5 md:flex-row">
-          {/* search bar */}
           <Search />
-          {/* category filter */}
           <CategoryFilter />
         </div>
-        {/* event grid */}
         <Collection
           data={events?.data}
           emptyTitle="No Events Found"
           emptyMessage="There are currently no events available. Please check back later."
           collectionType="All_Events"
           limit={6}
-          page={1}
-          totalPages={2}
+          page={page}
+          totalPages={events?.totalResults}
         />
-        {/* pagination */}
       </section>
     </>
   );
