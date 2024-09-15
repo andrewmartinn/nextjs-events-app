@@ -214,6 +214,10 @@
     @apply p-regular-16 h-[54px] w-full rounded-xl border-none bg-grey-50 px-5 py-3 placeholder:text-grey-500 focus:ring-transparent focus-visible:ring-transparent !important;
   }
 
+  .category-select {
+    @apply p-regular-16 h-[54px] w-full rounded-full border-none bg-grey-50 px-5 py-3 placeholder:text-grey-500 focus:ring-transparent focus-visible:ring-transparent !important;
+  }
+
   .input-field {
     @apply p-regular-16 h-[54px] rounded-xl border-none bg-grey-50 px-4 py-3 placeholder:text-grey-500 focus-visible:ring-transparent focus-visible:ring-offset-0 !important;
   }

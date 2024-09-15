@@ -5,6 +5,7 @@ import Collection from "@/components/shared/events-collection";
 import { getAllEvents } from "@/lib/actions/event.actions";
 import Search from "@/components/shared/search";
 import { SearchParamProps } from "@/lib/definitions";
+import CategoryFilter from "@/components/shared/category-filter";
 
 export default async function Home({ searchParams }: SearchParamProps) {
   const page = Number(searchParams?.page) || 1;
@@ -57,6 +58,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
           {/* search bar */}
           <Search />
           {/* category filter */}
+          <CategoryFilter />
         </div>
         {/* event grid */}
         <Collection
