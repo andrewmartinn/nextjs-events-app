@@ -23,9 +23,11 @@ export default function CheckoutButton({ event }: CheckoutButtonProps) {
         </p>
       ) : (
         <>
-          <SignedIn>
-            <Checkout event={event} userId={userId} />
-          </SignedIn>
+          {userId !== event.eventOrganizer._id && (
+            <SignedIn>
+              <Checkout event={event} userId={userId} />
+            </SignedIn>
+          )}
           <SignedOut>
             <SignInButton>
               <Button className="rounded-full px-8">Get Tickets</Button>

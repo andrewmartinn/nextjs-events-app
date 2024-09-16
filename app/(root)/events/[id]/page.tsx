@@ -61,7 +61,6 @@ export default async function EventDetails({
                 </p>
               </div>
             </div>
-            {/* @TODO: ADD ORDER BUTTON */}
             <CheckoutButton event={event} />
             <div className="flex flex-col gap-5">
               <div className="flex gap-2 md:gap-3">
